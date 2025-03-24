@@ -5,13 +5,14 @@ from app.models import Transaction, User
 from app.core import db
 from app.services.websocket import notify_user
 
-celery = Celery('tasks', broker=Config.CELERY_BROKER_URL)
+celery = Celery("tasks", broker=Config.CELERY_BROKER_URL)
 
-@celery.task(name='process_transaction')
+
+@celery.task(name="process_transaction")
 def process_transaction(tx_hash, network):
     # بررسی وضعیت تراکنش با توجه به شبکه
     try:
-        if network.upper() == 'TON':
+        if network.upper() == "TON":
             processor = TonProcessor()
         else:
             processor = EVMProcessor(network=network)

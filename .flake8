@@ -4,6 +4,4 @@ max-line-length = 130
 exclude =
     venv,
     .git,
-    __pycache__
-ignore =
-    E501  # اگر اصلاً نمی‌خواهید خطاهای line too long گزارش شود
+    __pycache__ 

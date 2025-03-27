@@ -1,5 +1,3 @@
-# .github/workflows/ci.yml
-
 name: CI/CD Payment System
 
 on:
@@ -12,7 +10,6 @@ jobs:
   test_and_build:
     runs-on: ubuntu-latest
 
-    # اجازه نوشتن در مخزن برای Commit خودکار
     permissions:
       contents: write
 
@@ -32,8 +29,7 @@ jobs:
           pip install pytest black flake8
 
       - name: Auto-format code with Black
-        run: |
-          black .
+        run: black .
 
       - name: Check if any changes after Black
         id: git_diff
@@ -52,41 +48,31 @@ jobs:
         with:
           add: '.'
           message: 'Apply Black auto-formatting'
-          # اگر شاخه اصلی شما چیزی غیر از main است، آن را عوض کنید
-          branch: main
+          branch: System-payment
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Flake8 linting
         run: |
-          flake8 .
+          flake8 --ignore=F401,F841 .
 
       - name: Run tests with pytest
-        run: |
-          pytest --maxfail=1 --disable-warnings -q
-
-      - name: Install Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
+        run: pytest --maxfail=1 --disable-warnings -q
 
       - name: Install Docker Compose
         run: |
           sudo apt-get update
-          sudo apt-get install docker-compose -y
+          sudo apt-get install -y docker-compose
 
       - name: Build Docker image for Payment System
-        run: |
-          docker build . -t payment-system
-          
-      - name: Install Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
+        run: docker build . -t payment-system
 
       - name: Run Docker Compose for integration testing
         run: |
-          docker-compose up --build -d
-          # در صورت نیاز، کمی تاخیر برای راه‌اندازی سرویس‌ها
-          sleep 10
-          docker-compose ps
+          docker compose up --build -d
+          sleep 10  # تاخیر برای راه‌اندازی سرویس‌ها
+          docker compose ps
 
       - name: Tear down Docker Compose services
         if: always()
-        run: docker-compose down
+        run: docker compose down

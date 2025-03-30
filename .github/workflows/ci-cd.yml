@@ -5,20 +5,6 @@ on:
     branches: [ System-payment ]
   pull_request:
     branches: [ System-payment ]
-    
-env:
-  FLASK_SECRET: ${{ secrets.FLASK_SECRET }}
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
-  BSC_RPC_URL: ${{ secrets.BSC_RPC_URL }}
-  TON_RPC_URL: ${{ secrets.TON_RPC_URL }}
-  TON_API_KEY: ${{ secrets.TON_API_KEY }}
-  USDT_ETH_CONTRACT: ${{ secrets.USDT_ETH_CONTRACT }}
-  USDT_TON_CONTRACT: ${{ secrets.USDT_TON_CONTRACT }}
-  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-  CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }}
-  TON_MERCHANT_WALLET: ${{ secrets.TON_MERCHANT_WALLET }}
-  ETH_MERCHANT_WALLET: ${{ secrets.ETH_MERCHANT_WALLET }}
 
 jobs:
   test_and_build:
@@ -30,6 +16,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Create .env file from Secrets
+        run: |
+          touch .env
+          echo "FLASK_SECRET=${{ secrets.FLASK_SECRET }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "ETH_RPC_URL=${{ secrets.ETH_RPC_URL }}" >> .env
+          echo "BSC_RPC_URL=${{ secrets.BSC_RPC_URL }}" >> .env
+          echo "TON_RPC_URL=${{ secrets.TON_RPC_URL }}" >> .env
+          echo "TON_API_KEY=${{ secrets.TON_API_KEY }}" >> .env
+          echo "USDT_ETH_CONTRACT=${{ secrets.USDT_ETH_CONTRACT }}" >> .env
+          echo "USDT_TON_CONTRACT=${{ secrets.USDT_TON_CONTRACT }}" >> .env
+          echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> .env
+          echo "CELERY_BROKER_URL=${{ secrets.CELERY_BROKER_URL }}" >> .env
+          echo "TON_MERCHANT_WALLET=${{ secrets.TON_MERCHANT_WALLET }}" >> .env
+          echo "ETH_MERCHANT_WALLET=${{ secrets.ETH_MERCHANT_WALLET }}" >> .env
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
@@ -77,7 +79,6 @@ jobs:
           else
             echo "No tests found, skipping pytest."
           fi
-
 
       - name: Install Docker Compose
         run: |

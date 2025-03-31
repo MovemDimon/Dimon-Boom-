@@ -3,7 +3,7 @@ from flask import request
 from app.models import User
 from app.core import db
 
-socketio = SocketIO(cors_allowed_origins=["https://your-domain.com"])
+socketio = SocketIO(cors_allowed_origins=["https://daimonium.ir"])
 
 
 def notify_user(user_id, new_balance):

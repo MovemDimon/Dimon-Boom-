@@ -55,7 +55,7 @@ def process_payment(update: Update, context: CallbackContext) -> int:
 
     # ارسال درخواست به سرور
     response = requests.post(
-        "https://your-domain.com/api/v1/process-payment",
+        "https://daimonium.ir/api/v1/process-payment",
         headers={"Authorization": f"Bearer {Config.TELEGRAM_BOT_TOKEN}"},
         json={
             "user_id": context.user_data["package"]["userId"],
